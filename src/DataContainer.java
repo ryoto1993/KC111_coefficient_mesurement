@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -8,21 +6,26 @@ import java.util.ArrayList;
  */
 public class DataContainer {
     private File cdinfo, datacsv;
-    private FileWriter cdinfo_writer, datacsv_writer;
+    private FileWriter datacsv_writer;
+    private PrintWriter cdinfo_writer;
 
     // 計測条件情報
-    private int light_no, light_num, signal, defsignal, sensor_num, interval;
+    private int light_no, signal, defsignal, sensor_num, interval;
     private int mode;   // mode 0 = white, mode 1 = 暖色
+
+    // 詳細設定
+    private int light_num = 12;
 
     // 計測情報
     private int position = 0;
 
 
     DataContainer() {
-        cdinfo = new File("cdinfo.txt");
+
     }
 
-    public void write_cdinfo() {
+    public void writeCdinfo() {
+        cdinfo = new File("cdinfo.txt");
         ArrayList<Integer> cd = new ArrayList<>();
         for(int i=0; i<light_num; i++) {
             if(mode == 0) {
@@ -43,14 +46,12 @@ public class DataContainer {
                 }
             }
         }
-
-
         try {
-            cdinfo_writer = new FileWriter(cdinfo, false);
+            cdinfo_writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cdinfo),"UTF-8")));
             while(!cd.isEmpty()) {
-                cdinfo_writer.write(cd.remove(0));
-                cdinfo_writer.write(", 0, ");
+                cdinfo_writer.write(cd.remove(0).toString() + ", ");
             }
+            cdinfo_writer.close();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -58,14 +59,14 @@ public class DataContainer {
 
     public void closeFiles() {
         try {
-            cdinfo_writer.close();
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     public void writeAndNext() {
-
+        position += interval;
     }
 
     public void setInterval(int interval) {
@@ -90,6 +91,7 @@ public class DataContainer {
 
     public void setMode(int mode) {
         this.mode = mode;
+        System.out.println(mode);
     }
 
     public int getPosition() {
