@@ -5,6 +5,6 @@ public class Main {
     public static void main(String[] args) {
         DataContainer dataContainer = new DataContainer();
 
-        new GUI();
+        new GUI(dataContainer);
     }
 }

@@ -12,6 +12,9 @@ public class DataContainer {
 
     private ArrayList<Integer> cd;
 
+    // 計測条件情報
+    private int light_no, signal, sensor_num, interval;
+
 
     DataContainer() {
         cdinfo = new File("cdinfo.txt");
@@ -36,5 +39,22 @@ public class DataContainer {
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    public void setSensor_num(int sensor_num) {
+        this.sensor_num = sensor_num;
+    }
+
+    public void setSignal(int signal) {
+        this.signal = signal;
+        System.out.println(signal);
+    }
+
+    public void setLight_no(int light_no) {
+        this.light_no = light_no;
     }
 }
