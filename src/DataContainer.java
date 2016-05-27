@@ -64,6 +64,10 @@ public class DataContainer {
         }
     }
 
+    public void writeAndNext() {
+
+    }
+
     public void setInterval(int interval) {
         this.interval = interval;
     }
