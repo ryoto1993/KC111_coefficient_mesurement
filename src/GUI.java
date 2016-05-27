@@ -156,6 +156,7 @@ public class GUI extends JFrame implements ActionListener {
             }
             setMeasurementPanel();
             dataContainer.setPosition(0);
+            label_position.setText(" Next Position : " + Integer.toString(dataContainer.getPosition()) + " cm");
             dataContainer.makeDataFile();
             dataContainer.writeCdinfo();
         } else if(cmd.equals("config_exit")) {

@@ -85,10 +85,7 @@ public class DataContainer {
         while(flag) {
             try {
                 sensor_fr = new FileReader("sensor.txt");
-                System.out.println("NG");
                 sensor_br = new BufferedReader(sensor_fr);
-
-                System.out.println("NG");
 
                 line = sensor_br.readLine();
 
