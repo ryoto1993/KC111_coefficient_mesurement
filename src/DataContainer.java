@@ -6,8 +6,7 @@ import java.util.ArrayList;
  */
 public class DataContainer {
     private File cdinfo, datacsv;
-    private FileWriter datacsv_writer;
-    private PrintWriter cdinfo_writer;
+    private PrintWriter cdinfo_writer, datacsv_writer;
 
     // 計測条件情報
     private int light_no, signal, defsignal, sensor_num, interval;
@@ -57,9 +56,19 @@ public class DataContainer {
         }
     }
 
-    public void closeFiles() {
-        try {
+    public void makeDataFile() {
+        datacsv = new File("data/Light" + Integer.toString(light_no) + "_" + Integer.toString(signal) + ".csv");
 
+        try {
+            datacsv_writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cdinfo),"UTF-8")));
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void closeDataFile() {
+        try {
+            datacsv_writer.close();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -70,7 +79,7 @@ public class DataContainer {
     }
 
     public void setInterval(int interval) {
-        this.interval = interval;
+        this.interval = interval * sensor_num;
     }
 
     public void setSensor_num(int sensor_num) {

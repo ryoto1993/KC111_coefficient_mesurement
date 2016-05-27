@@ -152,6 +152,7 @@ public class GUI extends JFrame implements ActionListener {
                 return;
             }
             setMeasurementPanel();
+            dataContainer.makeDataFile();
             dataContainer.writeCdinfo();
         } else if(cmd.equals("config_exit")) {
             this.dispose();
@@ -160,6 +161,7 @@ public class GUI extends JFrame implements ActionListener {
             dataContainer.writeAndNext();
             label_position.setText(" Position : " + Integer.toString(dataContainer.getPosition()) + " cm");
         } else if(cmd.equals("finish")) {
+            dataContainer.closeDataFile();
             setConfigPanel();
         }
     }
