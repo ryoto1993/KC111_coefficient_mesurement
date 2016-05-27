@@ -53,23 +53,26 @@ public class GUI extends JFrame implements ActionListener {
         btn_exit.addActionListener(this);
         btn_exit.setActionCommand("config_exit");
         fld_lightno = new JTextField();
+        fld_lightno.setText(Integer.toString(dataContainer.getLight_no()));
         fld_sensorno = new JTextField();
+        fld_sensorno.setText(Integer.toString(dataContainer.getSensor_num()));
         fld_interval = new JTextField();
-        fld_interval.setText("10");
+        fld_interval.setText(Integer.toString(dataContainer.getInterval()));
 
         Vector<Integer> combodata = new Vector<>();
         combodata.add(50);
         combodata.add(70);
         combodata.add(90);
         com_signal = new JComboBox(combodata);
-        com_signal.setSelectedIndex(2);
+        com_signal.setSelectedItem(dataContainer.getSignal());
         com_defsignal = new JComboBox(combodata);
-        com_defsignal.setSelectedIndex(1);
+        com_defsignal.setSelectedItem(dataContainer.getDefsignal());
 
         Vector<String> modedata = new Vector<>();
         modedata.add("昼光色");
         modedata.add("電球色");
         com_mode = new JComboBox(modedata);
+        com_mode.setSelectedIndex(dataContainer.getMode());
 
         p.add(lbl_mode);
         p.add(com_mode);
@@ -107,7 +110,7 @@ public class GUI extends JFrame implements ActionListener {
         JLabel label_signal = new JLabel(" Signal : " + com_signal.getSelectedItem());
         label_signal.setFont(new Font("Arial", Font.PLAIN, 25));
         label_light.setFont(new Font("Arial", Font.PLAIN, 25));
-        label_position = new JLabel(" Position : " + Integer.toString(dataContainer.getPosition()) + " cm");
+        label_position = new JLabel(" Next Position : " + Integer.toString(dataContainer.getPosition()) + " cm");
         label_position.setFont(new Font("Arial", Font.PLAIN, 25));
 
         JButton btn_measurement = new JButton("データ書き込み");
@@ -152,6 +155,7 @@ public class GUI extends JFrame implements ActionListener {
                 return;
             }
             setMeasurementPanel();
+            dataContainer.setPosition(0);
             dataContainer.makeDataFile();
             dataContainer.writeCdinfo();
         } else if(cmd.equals("config_exit")) {
@@ -159,7 +163,7 @@ public class GUI extends JFrame implements ActionListener {
             System.exit(0);
         } else if(cmd.equals("measurement")) {
             dataContainer.writeAndNext();
-            label_position.setText(" Position : " + Integer.toString(dataContainer.getPosition()) + " cm");
+            label_position.setText(" Next Position : " + Integer.toString(dataContainer.getPosition()) + " cm");
         } else if(cmd.equals("finish")) {
             dataContainer.closeDataFile();
             setConfigPanel();

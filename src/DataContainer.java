@@ -1,15 +1,18 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * Created by RyotoTomioka on 2016/05/27.
  */
 public class DataContainer {
-    private File cdinfo, datacsv;
+    private File cdinfo, datacsv, sensor;
     private PrintWriter cdinfo_writer, datacsv_writer;
+    private FileReader sensor_fr;
+    private BufferedReader sensor_br;
 
     // 計測条件情報
-    private int light_no, signal, defsignal, sensor_num, interval;
+    private int light_no = 1, signal, defsignal = 70, sensor_num = 1, interval = 10;
     private int mode;   // mode 0 = white, mode 1 = 暖色
 
     // 詳細設定
@@ -60,7 +63,7 @@ public class DataContainer {
         datacsv = new File("data/Light" + Integer.toString(light_no) + "_" + Integer.toString(signal) + ".csv");
 
         try {
-            datacsv_writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cdinfo),"UTF-8")));
+            datacsv_writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(datacsv),"UTF-8")));
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -75,11 +78,41 @@ public class DataContainer {
     }
 
     public void writeAndNext() {
-        position += interval;
+        boolean flag = true;
+        String line;
+        StringTokenizer token;
+
+        while(flag) {
+            try {
+                sensor_fr = new FileReader("sensor.txt");
+                System.out.println("NG");
+                sensor_br = new BufferedReader(sensor_fr);
+
+                System.out.println("NG");
+
+                line = sensor_br.readLine();
+
+                if(line == "") {
+                    sensor_br.close();
+                    continue;
+                } else {
+                    token = new StringTokenizer(line, ",");
+                    for(int i=0; i<sensor_num; i++) {
+                        datacsv_writer.write(token.nextToken() + ", ");
+                    }
+                    sensor_br.close();
+                    flag = false;
+                }
+
+            } catch (Exception e) {}
+
+        }
+
+        position += interval * sensor_num;
     }
 
     public void setInterval(int interval) {
-        this.interval = interval * sensor_num;
+        this.interval = interval;
     }
 
     public void setSensor_num(int sensor_num) {
@@ -100,10 +133,37 @@ public class DataContainer {
 
     public void setMode(int mode) {
         this.mode = mode;
-        System.out.println(mode);
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public int getPosition() {
         return position;
+    }
+
+    public int getLight_no() {
+        return light_no;
+    }
+
+    public int getSignal() {
+        return signal;
+    }
+
+    public int getDefsignal() {
+        return defsignal;
+    }
+
+    public int getSensor_num() {
+        return sensor_num;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public int getMode() {
+        return mode;
     }
 }
