@@ -23,6 +23,17 @@ public class GUI extends JFrame implements ActionListener {
         this.setBounds(100, 100, 300, 200);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // If Nimbus is not available, you can set the GUI to another look and feel.
+        }
+
         setConfigPanel();
 
         this.setVisible(true);
@@ -34,7 +45,7 @@ public class GUI extends JFrame implements ActionListener {
         JLabel lbl_mode = new JLabel("照明色温度");
         JLabel lbl_lightno = new JLabel("照明番号");
         JLabel lbl_sensorno = new JLabel("センサの数");
-        JLabel lbl_interval = new JLabel("センサ間隔");
+        JLabel lbl_interval = new JLabel("センサ間隔（cm）");
         JLabel lbl_defsignal = new JLabel("初期化信号値");
         JLabel lbl_signal = new JLabel("信号値");
         JButton btn_ok = new JButton("OK");
